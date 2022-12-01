@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "advent_of_code_2021 day 8: seven segment search": "cpp",
+        "deque": "cpp",
+        "string": "cpp",
+        "vector": "cpp",
+        "ostream": "cpp",
+        "iostream": "cpp"
+    }
+}
