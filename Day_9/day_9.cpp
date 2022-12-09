@@ -75,6 +75,11 @@ void printHeightmap(){
     }
 }
 
+void addTheLowesPoint(int &i, int &j, int &localMin){
+    theLowestPoint.push_back(localMin);
+    lowPoints.emplace_back(j,i);
+}
+
 void searchIfTheLowest(){
     cout<<endl;
     for (int i = 0; i < heightmap.size(); i++)
@@ -86,19 +91,16 @@ void searchIfTheLowest(){
             {
                 //left and right upper corner
                 if(j==0 && (localMin<heightmap[i][j+1].number && localMin<heightmap[i+1][j].number)) { 
-                    theLowestPoint.push_back(localMin);
-                    lowPoints.emplace_back(j,i);
+                    addTheLowesPoint(i, j, localMin);
                 }
                 if(j==heightmap[i].size()-1 && (localMin<heightmap[i][j-1].number && localMin<heightmap[i+1][j].number)) { 
-                    theLowestPoint.push_back(localMin); 
-                    lowPoints.emplace_back(j,i);
+                    addTheLowesPoint(i, j, localMin);
                 }
                 //anythink in line other then corners
                 else
                 {
                     if(localMin<heightmap[i][j-1].number && localMin<heightmap[i][j+1].number && localMin<heightmap[i+1][j].number) { 
-                        theLowestPoint.push_back(localMin); 
-                        lowPoints.emplace_back(j,i);
+                        addTheLowesPoint(i, j, localMin);
                     }
                 }
 
@@ -107,41 +109,35 @@ void searchIfTheLowest(){
             {
                 //left and right bottom corner
                 if(j==0 && (localMin<heightmap[i][j+1].number && localMin<heightmap[i-1][j].number)) { 
-                    theLowestPoint.push_back(localMin); 
-                    lowPoints.emplace_back(j,i);
+                    addTheLowesPoint(i, j, localMin);
                 }
                 if(j==heightmap[i].size()-1 && (localMin<heightmap[i][j-1].number && localMin<heightmap[i-1][j].number)) { 
-                    theLowestPoint.push_back(localMin); 
-                    lowPoints.emplace_back(j,i);
+                    addTheLowesPoint(i, j, localMin);
                 }
                 //anythink in line other then corners
                 else
                 {
                     if(localMin<heightmap[i][j-1].number && localMin<heightmap[i][j+1].number && localMin<heightmap[i-1][j].number) { 
-                        theLowestPoint.push_back(localMin);
-                        lowPoints.emplace_back(j,i);
+                        addTheLowesPoint(i, j, localMin);
                     }
                 }
             }
             else if (j==0) //left border without corners
             {
                 if(localMin<heightmap[i-1][j].number && localMin<heightmap[i][j+1].number && localMin<heightmap[i+1][j].number) { 
-                    theLowestPoint.push_back(localMin);
-                    lowPoints.emplace_back(j,i);
+                    addTheLowesPoint(i, j, localMin);
                 }
             }
             else if (j==heightmap[i].size()-1) //right border without corners
             {
                 if(localMin<heightmap[i-1][j].number && localMin<heightmap[i][j-1].number && localMin<heightmap[i+1][j].number) { 
-                    theLowestPoint.push_back(localMin);
-                    lowPoints.emplace_back(j,i);
+                    addTheLowesPoint(i, j, localMin);
                 }
             }
             else //anythink what is not a border
             {
                 if(localMin<heightmap[i-1][j].number && localMin<heightmap[i][j+1].number && localMin<heightmap[i+1][j].number && localMin<heightmap[i][j-1].number) { 
-                    theLowestPoint.push_back(localMin);
-                    lowPoints.emplace_back(j,i);
+                    addTheLowesPoint(i, j, localMin);
                 }
             }
         }
