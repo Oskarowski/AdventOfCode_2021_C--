@@ -1,3 +1,4 @@
+//Advent_of_Code_2021 Day 10: Syntax Scoring
 #include <iostream>
 #include <vector>
 #include <fstream>
@@ -16,7 +17,7 @@ void importFromFile(string &nameOfFile, vector<string> &lines){
     }
 }
 
-void findFaultyBrackets(vector<string> lines, vector<char> &corruptedBrackets){
+void findFaultyBrackets( vector<string> lines, map<char,int> &corruptedBrackets ){
     vector<char> endingBrackets{')','}',']','>'};
     vector<char> startBrackets{'(','{','[','<'};
 
@@ -67,7 +68,7 @@ void findFaultyBrackets(vector<string> lines, vector<char> &corruptedBrackets){
                     }
                     else{
                         char firstFaultyBracket=singleLine[endingBracketPosition-1], secondFaultyBracket=singleLine[endingBracketPosition];
-                        corruptedBrackets.push_back(secondFaultyBracket);
+                        corruptedBrackets.find(secondFaultyBracket)->second++;
                         // cout<<endl<<lineAt+1<<"  Corupted line: "<<lines[lineAt]<<" faulty brackets: "<<firstFaultyBracket<<"  "<<secondFaultyBracket; 
                         // cout<<endl;
                         // for (auto &&w : singleLine)
@@ -84,21 +85,21 @@ void findFaultyBrackets(vector<string> lines, vector<char> &corruptedBrackets){
     }
 }
 
-int calculateIllegalPoints(vector<char> &brackets){
+int calculateIllegalPoints(map<char,int> &corruptedBrackets){
     int points=0;
-    for(char &bracket: brackets){
-        switch(bracket){
+    for(auto &&bracket: corruptedBrackets){
+        switch(bracket.first){
             case ')':
-                points+=3;
+                points+=bracket.second*3;
                 break;
             case '}':
-                points+=1197;
+                points+=bracket.second*1197;
                 break;
             case ']':
-                points+=57;
+                points+=bracket.second*57;
                 break;
             case '>':
-                points+=25137;
+                points+=bracket.second*25137;
                 break;
         }
     }
@@ -107,12 +108,13 @@ int calculateIllegalPoints(vector<char> &brackets){
 
 void partOne(){
     vector<string> lines;
-    vector<char> corruptedBrackets;
+    map<char,int> corruptedBrackets = { {')', 0}, {'}', 0}, {']', 0}, {'>', 0} };
+    // day_10_puzzleInput  day_10_testInput
     string nameOfFile="day_10_puzzleInput.txt";
     importFromFile(nameOfFile, lines);
     findFaultyBrackets(lines, corruptedBrackets);
     int illegalPoints = calculateIllegalPoints(corruptedBrackets);
-    cout<<endl<<"The total syntax error score for those errors is: "<<illegalPoints;
+    cout<<endl<<"The total syntax error score for those errors is: "<<illegalPoints<<endl;
 }
 
 int main()
