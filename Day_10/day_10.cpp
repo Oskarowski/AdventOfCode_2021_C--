@@ -202,12 +202,6 @@ void executeTask(){
     sortPoints(machingBracketsPoints);
     long long middleValue = getMiddleValue(machingBracketsPoints);
     cout<<endl<<"The middle score is: "<<middleValue<<endl;
-
-    
-    
-    
-    
-
 }
 
 
