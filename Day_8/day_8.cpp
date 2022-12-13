@@ -5,6 +5,163 @@
 #include <sstream>
 using namespace std;
 
+vector<vector<string>> encryptedTable;
+
+void importData(){
+    ifstream file;
+    file.open("testInput.txt");
+    if(file.is_open()){
+        string line;
+        int lineAt=0;;
+        int elementAt=0;
+        while(getline(file, line)){
+            encryptedTable.emplace_back();
+            string singular;
+            stringstream lineStream(line);
+            while (lineStream>>singular){
+                if(singular != "|"){
+                    encryptedTable[lineAt].push_back(singular);
+                }            
+            }
+            lineAt++;
+        }
+        cout<<endl;
+        file.close();
+    }
+}
+
+vector<vector<char>> displays;
+
+void decodePatterns(){
+    int unique=0;
+    displays.resize(encryptedTable.size(), vector<char>(7 , '0'));
+
+    for (int i = 0; i < encryptedTable.size(); i++)
+    {
+        int lineSize = encryptedTable[i].size(); 
+        // cout<<endl<<"lineSize[0]: "<<lineSize;
+        for(int k = 0; k < lineSize; k++){
+            int encryptionSize = encryptedTable[i][k].size();
+            // cout<<endl<<"encryptedTable[i][k]: "<<encryptedTable[i][k];
+            // cout<<endl<<"encryptionSize: "<<encryptionSize;
+            string encryptedNumber = encryptedTable[i][k];
+            // cout<<endl<<"encryptedNumber: "<<encryptedNumber;
+            switch(encryptionSize){
+                case 2:
+                    displays[i][2]=encryptedNumber[0];
+                    displays[i][5]=encryptedNumber[1];
+                    break;
+                case 3:
+                    for (auto &&letter : encryptedNumber)
+                    {
+                        if( 
+                            letter != displays[i][2] && 
+                            letter != displays[i][5]) 
+                            { displays[i][0] = letter; }
+                    }
+                    break;
+                case 4:
+                    for (auto &&letter : encryptedNumber)
+                    {
+                        if( 
+                            letter != displays[i][2] && 
+                            letter != displays[i][5] &&
+                            letter != displays[i][0]) 
+                            { displays[i][3] = letter; }
+                    }
+                    break;
+                case 7:
+                    for (auto &&letter : encryptedNumber)
+                    {
+                        if( 
+                            letter != displays[i][2] &&
+                            letter != displays[i][5] &&
+                            letter != displays[i][0] &&
+                            letter != displays[i][3]) 
+                            { displays[i][1] = letter; }
+                    }
+                    for (auto &&letter : encryptedNumber)
+                    {
+                        if( 
+                            letter != displays[i][2] && 
+                            letter != displays[i][5] &&
+                            letter != displays[i][0] &&
+                            letter != displays[i][3] &&
+                            letter != displays[i][1]) 
+                            { displays[i][4] = letter; }
+                    }
+                    for (auto &&letter : encryptedNumber)
+                    {
+                        if(
+                            letter != displays[i][2] &&  
+                            letter != displays[i][5] &&
+                            letter != displays[i][0] &&
+                            letter != displays[i][3] &&
+                            letter != displays[i][1] &&
+                            letter != displays[i][4]) 
+                            { displays[i][6] = letter; }
+                    }
+                    break;
+            }
+        }
+    }
+    cout<<endl;
+    for (int i = 0; i < displays.size(); i++)
+    {
+        cout<<endl;
+        for (size_t j = 0; j < 7; j++)
+        {
+            cout<<" "<<displays[i][j];
+        }
+    }
+}
+
+
+
+int main(){
+    cout<<endl<<"Advent_of_Code_2021 Day 8: Seven Segment Search";
+    importData();    
+    decodePatterns();
+    cout<<endl<<endl;
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
 struct displayScreen
 {
         vector<vector<string>> displayScreen{
@@ -29,7 +186,6 @@ struct displayScreen
         }
     }
 };
-
 
 struct encodedNumber{
 
@@ -125,10 +281,5 @@ void letsssRollPart_2(){
 
 }
 
-int main(){
-    cout<<endl<<"Advent_of_Code_2021 Day 8: Seven Segment Search";
-    // letsssRollPart_1();
-    letsssRollPart_2();
 
-    return 0;
-}
+*/
